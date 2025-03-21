@@ -14,12 +14,19 @@ const data = [
 
 app.use(express.json());
 
+app.get('/', (req, res) => {
+    res.send("Cookies")
+})
+
 app.post('/login', (req, res) =>{
     const userId = req.body.userId;
     const user = { userId: userId };
 
-    const token = jwt.sign(user, "secret");
-    res.json({token: token});
+    const accessToken = jwt.sign(user, "secret", {expiresIn: "30s"});
+
+
+    
+    res.json({accessToken: accessToken});
 })
 
 app.post('/data', authMiddleware, (req, res) => {
